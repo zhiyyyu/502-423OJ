@@ -1,12 +1,12 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-from conf.global_conf import AVATAR_URI_PREFIX
-from django_mysql.models import SetTextField
+# from conf.global_conf import AVATAR_URI_PREFIX
+# from django_mysql.models import SetTextField
 
 
-class UserType(object):
-    REGULAR_USER = "Regular User"
-    ADMIN_USER = "Admin User"
+# class UserType(object):
+#     REGULAR_USER = "Regular User"
+#     ADMIN_USER = "Admin User"
 
 
 # class UserManager(BaseUserManager):
@@ -33,35 +33,38 @@ class UserType(object):
 #         return self._create_user(username, password, **kwargs)
 
 
+# class User(AbstractUser):
+#     # base info
+#     username = models.CharField(max_length=150, unique=True, null=False, blank=False)
+#     password = models.CharField(max_length=150, null=False, blank=False)
+#     email = models.EmailField(unique=True, null=False, blank=False,default='')
+#     create_time = models.DateTimeField(auto_now_add=True)
+#     update_time = models.DateTimeField(auto_now=True)
+#     user_type = models.TextField(default=UserType.REGULAR_USER)
+
+#     # reset pwd need
+#     reset_password_token = models.TextField(null=True)
+#     reset_password_token_expire_time = models.DateTimeField(null=True)
+
+#     # reset email need
+#     reset_email_token = models.TextField(null=True)
+#     reset_email_token_expire_time = models.DateTimeField(null=True)
+
+#     USERNAME_FIELD = 'username'
+#     REQUIRED_FIELDS = ['email']
+#     EMAIL_FIELD = 'email'
+
+#     objects = UserManager()
+
+#     def is_admin(self):
+#         return self.user_type == UserType.ADMIN_USER
+
+#     class Meta:
+#         db_table = "user"
+
 class User(AbstractUser):
-    # base info
     username = models.CharField(max_length=150, unique=True, null=False, blank=False)
     password = models.CharField(max_length=150, null=False, blank=False)
-    # email = models.EmailField(unique=True, null=False, blank=False,default='')
-    # create_time = models.DateTimeField(auto_now_add=True)
-    # update_time = models.DateTimeField(auto_now=True)
-    # user_type = models.TextField(default=UserType.REGULAR_USER)
-
-    # # reset pwd need
-    # reset_password_token = models.TextField(null=True)
-    # reset_password_token_expire_time = models.DateTimeField(null=True)
-
-    # # reset email need
-    # reset_email_token = models.TextField(null=True)
-    # reset_email_token_expire_time = models.DateTimeField(null=True)
-
-    # USERNAME_FIELD = 'username'
-    # REQUIRED_FIELDS = ['email']
-    # EMAIL_FIELD = 'email'
-
-    # objects = UserManager()
-
-    # def is_admin(self):
-    #     return self.user_type == UserType.ADMIN_USER
-
-    # class Meta:
-    #     db_table = "user"
-
 
 # class UserProfile(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.CASCADE)

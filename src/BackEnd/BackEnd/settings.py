@@ -26,8 +26,10 @@ SECRET_KEY = '33yne_l5x2pfncy6a7lr@%vq3=##unj1rgl)$40ly3+2pwxx1j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+
+# AUTH_USER_MODEL = "account.User" 
 
 # Application definition
 
@@ -41,10 +43,12 @@ INSTALLED_APPS = [
 
     # 3rdparty apps
     'rest_framework',
-    'celery',
+    # 'corsheaders',
 
     # my apps
-    'account',
+    'problemlist',
+    'user_info',
+    'comment',
     
 ]
 
@@ -79,11 +83,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'BackEnd.wsgi.application'
 
 REST_FRAMEWORK = {
+    # 过滤文章功能
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     # 使用Django的标准`django.contrib.auth`权限管理类,
     # 或者为尚未认证的用户，赋予只读权限.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        # 'rest_framework.pagination.PageNumberPagination',
+    ],
+    # 'PAGE_SIZE': 1,    # 和上面的PageNumberPagination一起用来分页
 }
 
 # Database
@@ -138,3 +147,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Media
+MediaURL = '/media/'
+MediaROOT = os.path.join(BASE_DIR, 'media')

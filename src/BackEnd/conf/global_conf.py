@@ -5,7 +5,7 @@ DATABASE_SETTING = {
     'DATABASE_NAME': "oj_db",
     'DATABASE_USER': environ.get('OJ_DATABASE_USER'),
     'DATABASE_PWD': environ.get('OJ_DATABASE_PWD'),
-    'DATABASE_HOST': "127.0.0.1",
+    'DATABASE_HOST': "localhost",
     'DATABASE_PORT': "3306",
 }
 

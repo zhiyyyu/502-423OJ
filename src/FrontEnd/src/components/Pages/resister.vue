@@ -1,62 +1,50 @@
-<!--注册的弹窗-->
 <template>
-  <div>
-    <el-dialog title="注册"
-               :visible.sync="dialogRegisterVisible"
-               :close-on-click-modal="false"
-               center
-               width="450px">
+  <el-card id="app">
+    <el-form :model="form"
+             @keyup.native.enter="registerClick"
+             label-width="70px">
 
+      <el-form-item label="username">
+        <el-input v-model="form.username"
+                  autocomplete="off"
+                  placeholder="username"></el-input>
+      </el-form-item>
 
-      <el-form :model="form"
-               @keyup.native.enter="registerClick"
-               label-width="70px">
-        <el-form-item label="用户名">
-          <el-input v-model="form.username"
-                    autocomplete="off"
-                    placeholder="不少于6个字符的用户名，必填"></el-input>
-        </el-form-item>
-        <el-form-item label="用户昵称">
-          <el-input v-model="form.nickname"
-                    autocomplete="off"
-                    placeholder="不少于6个字符的昵称，必填"></el-input>
-        </el-form-item>
+      <el-form-item label="nickname">
+        <el-input v-model="form.nickname"
+                  autocomplete="off"
+                  placeholder="nickname"></el-input>
+      </el-form-item>
 
-        <el-form-item label="密码">
-          <el-input type="password"
-                    v-model="form.password"
-                    autocomplete="off"
-                    placeholder="不少于6个字符的密码，必填"></el-input>
-        </el-form-item>
+      <el-form-item label="password">
+        <el-input type="password"
+                  v-model="form.password"
+                  autocomplete="off"
+                  placeholder="password"></el-input>
+      </el-form-item>
 
-
-        <el-form-item label="邮箱">
-          <el-input
+      <el-form-item label="email">
+        <el-input
             v-model="form.email"
             autocomplete="off"
-            placeholder="请填写真实邮箱，必填"></el-input>
-        </el-form-item>
+            placeholder="email"></el-input>
+      </el-form-item>
 
-      </el-form>
-
-      <div slot="footer" style="margin-top: -25px">
-        <el-button @click="dialogRegisterVisible = false">取 消</el-button>
-        <el-button type="primary"
-                   @click="registerClick">确 定
-        </el-button>
-      </div>
-    </el-dialog>
-  </div>
+      <el-button type="primary" @click="registerClick">
+        Resister
+      </el-button>
+    </el-form>
+  </el-card>
 </template>
 
 <script>
 import Qs from 'qs'
 
 export default {
-  name: "Resister",
+  name: "resister",
   data() {
     return {
-      dialogRegisterVisible: true,
+      dialogRegisterVisible: false,
       form: {
         nickname:"",
         username: "",
@@ -124,7 +112,7 @@ export default {
             type: "success"
           });
         }
-        this.dialogRegisterVisible = true;
+        this.dialogRegisterVisible = false;
         this.form.password = "";
 
       }).catch(error => {

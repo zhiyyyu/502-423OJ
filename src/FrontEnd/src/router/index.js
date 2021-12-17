@@ -12,43 +12,60 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'Home',
-            component: (resolve) => require(["../components/Pages/Home"],resolve),
+            name: 'home',
+            component: (resolve) => require(["../components/Pages/home"],resolve),
             meta:{
                 keepAlive: true
-        }
+            }
         },
         {
             path:'/problemlist',
-            name:'ProblemList',
-            component:(resolve) => require(["../components/Pages/ProblemList"],resolve),
+            name:'problemlist',
+            component:(resolve) => require(["../components/Pages/problemlist"],resolve),
             meta:{
                 keepAlive: true
             }
         },
         {
             path:'/problemlist/:id',
-            name:'ProblemDetail',
-            component:(resolve) => require(["../components/Pages/ProblemDetail"], resolve),
+            name:"problemdetails",
+            component:(resolve) => require(["../components/Pages/problemdetails"],resolve),
             meta:{
                 keepAlive: true
             }
         },
         {
-            path:'/login',
-            name:'Login',
-            component:(resolve) => require(["../components/Pages/Login"],resolve),
+            path:'/about',
+            name:'about',
+            component:(resolve) => require(["../components/Pages/about"],resolve),
             meta:{
                 keepAlive: true
             }
         },
         {
-            path:'/register',
-            name:'Register',
-            component:(resolve) => require(["../components/Pages/Resister"],resolve),
+            path:'/status',
+            name:'status',
+            component:(resolve)=>require(["../components/Pages/status"],resolve),
             meta:{
                 keepAlive: true
             }
         }
+
+        // {
+        //     path:'/login',
+        //     name:'logindialog.vue',
+        //     component:(resolve) => require(["../components/Pages/login"],resolve),
+        //     meta:{
+        //         keepAlive: true
+        //     }
+        // },
+        // {
+        //     path:'/resister',
+        //     name:'resister',
+        //     component:(resolve) => require(["../components/Pages/resister"],resolve),
+        //     meta:{
+        //         keepAlive: true
+        //     }
+        // }
     ]
 })

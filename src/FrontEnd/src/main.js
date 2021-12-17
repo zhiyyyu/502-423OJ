@@ -31,6 +31,9 @@ import 'default-passive-events'
 //引入粒子背景插件
 import VueParticles from 'vue-particles'
 
+import VueCodeMirror from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+Vue.use(VueCodeMirror)
 
 
 //使用引入的模块
@@ -43,12 +46,12 @@ Vue.prototype.$md5 = md5
 Vue.use(codemirror)
 Vue.use(ElementUI);
 
-Vue.prototype.$axios = axios    //全局注册，使用方法为:this.$axios
+//全局注册，使用方法为:this.$axios
+Vue.prototype.$axios = axios;
 axios.defaults.baseURL = "http://localhost:8000/";
+
 Vue.use(VueParticles)
 
-
-Vue.config.productionTip = false
 
 
 
@@ -119,7 +122,7 @@ axios.interceptors.request.use(
         } else {
           if (!isRefreshing) {
             isRefreshing = true;
-            axios.post("http://localhost:8000/",
+            axios.post(axios.defaults.baseURL,
                 {"refresh": sessionStorage.getItem("refreshToken")})
                 .then(Response => {
                   isRefreshing = false;

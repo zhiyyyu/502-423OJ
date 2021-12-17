@@ -29,30 +29,42 @@
         <span>About</span>
       </el-menu-item>
 
-      <el-menu-item index="/about" v-if="Admin">
-        <i class="el-icon-s-order"></i>
-        <span>Admin</span>
-      </el-menu-item>
-
-      <el-button id="resister-button" type="primary" round v-on:click="resisterClick">
+      <el-button id="resister-button"
+                 type="primary"
+                 round
+                 v-if="isShowButton"
+                 v-on:click="resisterClick">
         Resister
       </el-button>
-      <el-button id="login-button" type="primary" round v-on:click="loginClick">
+      <el-button id="login-button"
+                 type="primary"
+                 round
+                 v-if="isShowButton"
+                 v-on:click="loginClick">
         Login
       </el-button>
-
     </el-menu>
+    <div id="dialog">
+      <logindialog ref="logindialog"></logindialog>
+      <resisterdialog ref="resisterdialog"></resisterdialog>
+    </div>
   </div>
 </template>
 
-<script>
 
+<script>
+import logindialog from "@/components/Dialog/logindialog";
+import resisterdialog from "@/components/Dialog/resisterdialog";
 export default {
-  name: "nav",
-  props:["isLoginForm","isResisterForm"],
+  name: "oj-navigation",
+  props:[],
+  components:{
+    logindialog,
+    resisterdialog
+  },
   data() {
     return{
-      load:false,
+      isShowButton:true,
       loginForm:false,
       resisterForm:false
     }
@@ -60,12 +72,15 @@ export default {
   methods:{
     //登录点击，弹出登录对话框组件
     loginClick:function () {
-      this.$router.replace('/login');
+      this.$refs.logindialog.open();
+      //this.$router.replace('/Login');
       console.log("你点击了登录按钮");
+      //this.$router.replace('/login')
     },
     //注册点击，弹出登录对话框组件
     resisterClick:function () {
-      this.$router.replace('/register');
+      this.$refs.resisterdialog.open();
+      //this.$router.replace('/Resister');
       console.log("你点击了注册按钮");
     }
   }

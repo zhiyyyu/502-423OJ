@@ -1,15 +1,12 @@
 <template>
-  <div id="content">
+  <el-card id="content">
     {{msg}}
-  </div>
-
+  </el-card>
 </template>
-
 <script>
 
-
 export default {
-  name: "Home",
+  name: "home",
   components:{
   },
   data:function () {
@@ -30,7 +27,6 @@ export default {
   color: black;
   vertical-align: center;
   height: 400px;
-  background-color: whitesmoke;
 }
 
 </style>

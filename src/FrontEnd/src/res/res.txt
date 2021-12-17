@@ -1,0 +1,95 @@
+
+     :” 是指令 “v-bind”的缩写，“@”是指令“v-on”的缩写；“.”是修饰符
+
+     v-bind 指令可以用于响应式地更新 HTML 特性
+     v-on 指令，它用于监听 DOM 事件
+
+
+
+
+
+
+     this.$el
+
+     获取Vue实例关联的DOM元素；vue中也是允许进行dom操作的（但是不建议）
+
+     注意this.$el关联的是真实Dom，所以需要在mounted渲染真实Dom之后才可以使用了
+
+     this.$refs
+
+     获取页面中所有含有ref属性的DOM元素（如vm.$refs.hello，获取页面中含有属性ref = “hello”的DOM元素，如果有多个元素，那么只返回最后一个）
+
+     this.$options
+
+     获取Vue实例的自定义属性（如this.$options.methods,获取Vue实例的自定义属性methods）
+
+     this.$data
+
+     获取Vue实例的data选项（对象）
+
+
+
+
+
+
+     console.log(app.$el);
+     返回Vue实例的关联DOM元素，在这里是#container
+
+     console.log(app.$data);
+     返回Vue实例的数据对象data，在这里就是对象{msg：”hello，2018“}
+
+     console.log(app.$options.address);
+     返回Vue实例的自定义属性address，在这里是自定义属性address
+
+     console.log(app.$refs.hello)
+
+
+
+
+
+
+     {
+               code:"",
+               create_time:"time",
+               id:1,
+               info:{
+                 error_code:1,
+                 id:1,
+                 score:100,
+               },
+               language:"",
+               problem:{
+                 ac_number:1,
+                 author:{
+                   data_joined:"time",
+                   id:1,
+                   last_join:"time",
+                   username:"张三"
+                 },
+                 body:"hello word",
+                 created:"time",
+                 difficulty: "Easy",
+                 id: 1,
+                 memory_limit: 1,
+                 submission_number: 1,
+                 tags: ["g"],
+                 time_limit: 1000,
+                 title:"helloword",
+                 url:"http://locahost:8000/api/problemlist/1/",
+               },
+               result:1,
+               static_info:{
+                 id:1,
+                 space:0,
+                 time:200
+               },
+               user_id:0
+             }
+
+
+
+             int main()
+             {
+             	printf("hello world!");
+             }
+

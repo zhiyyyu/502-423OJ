@@ -1,29 +1,27 @@
 <template>
-  <div id="app">
+  <el-card id="footer" >
     {{msg}}
-  </div>
+  </el-card>
 </template>
 
 <script>
 export default {
-  name: "Footer",
+  name: "oj-footer",
   data(){
     return{
-      msg:"@502-423OJ"
+      msg:"producer:yjl email:xxx@xxx.com"
     }
   }
 }
 </script>
 
 <style scoped>
-#app{
-  padding-top: 15px;
+#footer{
   text-align: center;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   font-size: small;
   color: black;
   vertical-align: center;
-  background-color: whitesmoke;
   height: 50px;
 }
 </style>

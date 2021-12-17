@@ -4,11 +4,9 @@ from rest_framework.response import Response
 from rest_framework import status, viewsets, generics
 from django.http import Http404
 
-from problemlist.models import Problem, Category, Tag, Avatar
+from problemlist.models import Problem, Tag
 from problemlist.serializer import (ProblemListSerializer, ProblemDetailSerializer, 
-                                CategorySerializer, CategoryDetailSerializer,
                                 TagSerializer, 
-                                AvatarSerializer
                                 )
 from problemlist.permission import IsAdminUserOrElseReadOnly
 
@@ -30,11 +28,11 @@ from problemlist.permission import IsAdminUserOrElseReadOnly
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class AvatarViewSet(viewsets.ModelViewSet):
+# class AvatarViewSet(viewsets.ModelViewSet):
 
-    queryset = Avatar.objects.all()
-    serializer_class = AvatarSerializer
-    permission_classes = [IsAdminUserOrElseReadOnly]
+#     queryset = Avatar.objects.all()
+#     serializer_class = AvatarSerializer
+#     permission_classes = [IsAdminUserOrElseReadOnly]
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -44,19 +42,19 @@ class TagViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrElseReadOnly]
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+# class CategoryViewSet(viewsets.ModelViewSet):
 
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = [IsAdminUserOrElseReadOnly]
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
+#     permission_classes = [IsAdminUserOrElseReadOnly]
 
-    def get_serializer_class(self):
-        # 只是查看category列表
-        if self.action == 'list':
-            return CategorySerializer
-        # 查看category的详情
-        else:
-            return CategoryDetailSerializer
+#     def get_serializer_class(self):
+#         # 只是查看category列表
+#         if self.action == 'list':
+#             return CategorySerializer
+#         # 查看category的详情
+#         else:
+#             return CategoryDetailSerializer
 
 
 # 题目列表视图

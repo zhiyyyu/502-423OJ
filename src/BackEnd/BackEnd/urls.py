@@ -21,15 +21,15 @@ from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
-from problemlist.views import ProblemListViewSet, CategoryViewSet, TagViewSet, AvatarViewSet
+from problemlist.views import ProblemListViewSet, TagViewSet
 from comment.views import CommentViewSet
 from user_info.views import UserViewSet
 
 router = DefaultRouter()
 router.register(r'problemlist', ProblemListViewSet)
-router.register(r'category', CategoryViewSet)
+# router.register(r'category', CategoryViewSet)
 router.register(r'tag', TagViewSet)
-router.register(r'avatar', AvatarViewSet)
+# router.register(r'avatar', AvatarViewSet)
 router.register(r'comment', CommentViewSet)
 router.register(r'user', UserViewSet)
 

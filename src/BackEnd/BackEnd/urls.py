@@ -24,22 +24,35 @@ from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from problemlist.views import ProblemListViewSet, TagViewSet
 from comment.views import CommentViewSet
 from user_info.views import UserViewSet
+from submission.views import (SubmissionViewSet, SubmissionResultViewSet,
+                            SubmissionListDetailViewSet,
+                            ResultViewSet, UsageViewSet,
+                            StatusViewSet)
 
 router = DefaultRouter()
+# 题库功能
 router.register(r'problemlist', ProblemListViewSet)
 # router.register(r'category', CategoryViewSet)
 router.register(r'tag', TagViewSet)
 # router.register(r'avatar', AvatarViewSet)
 router.register(r'comment', CommentViewSet)
 router.register(r'user', UserViewSet)
+# 提交功能
+router.register(r'result', ResultViewSet)
+router.register(r'usage', UsageViewSet)
+router.register(r'submission', SubmissionViewSet)
+router.register(r'submission_detail', SubmissionListDetailViewSet)
+router.register(r'submission_result', SubmissionResultViewSet)
+router.register(r'submission_status', StatusViewSet)
 
 urlpatterns = [
     # 后台url
     path('admin/', admin.site.urls),
     # app的url
     # path('api/', include('account.urls.user_urls')),
-    # path('api/problemlist/', include('problemlist.urls', namespace='problemlist')),   # namespace -> app_name
+    # path('api/submission/', include('submission.urls', namespace='submission')),   # namespace -> app_name
     path('api/', include(router.urls)),
+
     # 登陆界面
     path('api-auth/', include('rest_framework.urls')),
     # JWT

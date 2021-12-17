@@ -26,7 +26,9 @@ SECRET_KEY = '33yne_l5x2pfncy6a7lr@%vq3=##unj1rgl)$40ly3+2pwxx1j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 
+            '10.13.49.126', 
+            '10.13.49.54']
 
 
 # AUTH_USER_MODEL = "account.User" 
@@ -43,12 +45,14 @@ INSTALLED_APPS = [
 
     # 3rdparty apps
     'rest_framework',
+    'django_filters',
     # 'corsheaders',
 
     # my apps
     'problemlist',
     'user_info',
     'comment',
+    'submission',
     
 ]
 
@@ -56,7 +60,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -120,9 +124,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        # 'rest_framework.pagination.PageNumberPagination',
     ],
-    # 'PAGE_SIZE': 1,    # 和上面的PageNumberPagination一起用来分页
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,    # 和上面的PageNumberPagination一起用来分页
 }
 
 # Database

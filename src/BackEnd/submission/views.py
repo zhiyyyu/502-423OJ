@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -11,6 +11,7 @@ from submission.seriliazer import (UserSubmitCodeSerializer, UserGetSubmissionRe
                                 SubmissionSerializer, StatusSerializer,
                                 ResultSerializer, UsageSerializer)
 from judge.tasks import judge
+from utils.api import get_user_and_token_by_jwt_request
 
 
 class ResultViewSet(viewsets.ModelViewSet):
@@ -41,13 +42,42 @@ class SubmissionListDetailViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
 
+# 用户提交代码
 class SubmissionViewSet(viewsets.ModelViewSet):
 
     queryset = Submission.objects.all()
     serializer_class = UserSubmitCodeSerializer
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
     permission_classes = [AllowAny]
 
+    def get_serializer_class(self):
 
+        print('receive request.')
+        if self.request.method == 'GET':
+            serializer_class = UserGetSubmissionResultSerializer    
+
+        elif self.request.method == 'POST':
+            serializer_class = UserSubmitCodeSerializer
+
+            # user, token = get_user_and_token_by_jwt_request(self.request)
+
+            # if user:
+            data = self.request.data
+            submission = Submission.objects.create(
+                                problem=Problem.objects.get(id=data['problem']),
+                                user_id=self.request.user.id,
+                                code=self.request.data['code'],
+                                language=self.request.data['language'],
+                                )
+            submission.save()
+            print('judging')
+            judge.delay(submission.id, data['problem'])
+        
+        return serializer_class
+
+
+# 用户获取后端的结果
 class SubmissionResultViewSet(viewsets.ModelViewSet):
 
     queryset = Submission.objects.all()

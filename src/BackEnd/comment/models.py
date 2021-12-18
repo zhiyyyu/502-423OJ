@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 
 from problemlist.models import Problem
-from django.contrib.auth.models import User
+from user_info.models import User
 
 
 class Comment(models.Model):

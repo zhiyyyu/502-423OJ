@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
 from comment.models import Comment
-from user_info.serializer import UserDescSerializer
+from user_info.serializers import AdminManagerUserInfoSerializer
 
 
 class CommentChildrenSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='comment-detail')
-    author = UserDescSerializer(read_only=True)
+    author = AdminManagerUserInfoSerializer(read_only=True)
 
     class Meta:
         model = Comment
@@ -20,7 +20,7 @@ class CommentSerializer(serializers.ModelSerializer):
     # 评论详情链接
     url = serializers.HyperlinkedIdentityField(view_name='comment-detail')
     # 作者信息
-    author = UserDescSerializer(read_only=True)
+    author = AdminManagerUserInfoSerializer(read_only=True)
 
     # 问题链接
     problem = serializers.HyperlinkedRelatedField(view_name='problemlist-detail', read_only=True)

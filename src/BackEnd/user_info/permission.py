@@ -1,10 +1,12 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import BasePermission
+from rest_framework_simplejwt.authentication  import JWTAuthentication
+
+from user_info.models import UserType
+from utils.api import get_user_and_token_by_jwt_request
 
 
-class IsSelfOrReadOnly(BasePermission):
+class IsAdminUserPermission(BasePermission):
 
-    def has_object_permission(self, request, view, obj):
-        if request.method in SAFE_METHODS:
-            return True
-
-        return obj == request.user
+    def has_permission(self, request, view):
+        user, token = get_user_and_token_by_jwt_request(request)
+        return (user.user_type == UserType.ADMIN_USER)

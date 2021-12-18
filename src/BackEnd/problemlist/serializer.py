@@ -2,7 +2,8 @@ from rest_framework import serializers
 
 from problemlist.models import Problem, Tag
 from comment.serializer import CommentSerializer
-from user_info.serializer import UserDescSerializer
+from user_info.models import User
+from user_info.serializers import AdminManagerUserInfoSerializer
 
 
 # class AvatarSerializer(serializers.ModelSerializer):
@@ -78,8 +79,11 @@ class ProblemListBaseSerializer(serializers.HyperlinkedModelSerializer):    # �
     id = serializers.IntegerField(read_only=True)
     # HyperlinkedModelSerializer自动链接了
     # url = serializers.HyperlinkedIdentityField(view_name='problemlist:detail')  # 表示是problemlist的namespace下的detail，跟path里一致
-    # 绑定作者信息
-    author = UserDescSerializer(read_only=True)
+    # # 绑定作者信息
+    # author = AdminManagerUserInfoSerializer(
+    #     read_only=True, 
+    #     many=True,
+    # )
     # # 绑定分类信息，通过嵌套的方式显示指定
     # category = CategorySerializer(read_only=True)
     # # category 的 id 字段，用于创建/更新 category 外键

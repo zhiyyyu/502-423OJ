@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from conf.global_conf import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,12 +27,14 @@ SECRET_KEY = '33yne_l5x2pfncy6a7lr@%vq3=##unj1rgl)$40ly3+2pwxx1j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 
-            '10.13.49.126', 
-            '10.13.49.54']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1',]
 
 
-# AUTH_USER_MODEL = "account.User" 
+AUTH_USER_MODEL = "user_info.User" 
+# AUTHENTICATION_BACKEND = [
+#     'user_info.backend',
+#     # 'django.contrib.auth'
+# ]
 
 # Application definition
 
@@ -45,12 +48,14 @@ INSTALLED_APPS = [
 
     # 3rdparty apps
     'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework.authtoken',
     'django_filters',
-    # 'corsheaders',
+    'corsheaders',
 
     # my apps
-    'problemlist',
     'user_info',
+    'problemlist',
     'comment',
     'submission',
     
@@ -59,18 +64,17 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = ['localhost:8080', '127.0.0.1']
+CORS_ORIGIN_WHITELIST = ['http://localhost:8080']
 
 CORS_ALLOW_METHODS = (
         'DELETE',
@@ -83,17 +87,27 @@ CORS_ALLOW_METHODS = (
 )
 
 CORS_ALLOW_HEADERS = (
-        'XMLHttpRequest',
-        'X_FILENAME',
-        'accept-encoding',
-        'authorization',
-        'content-type',
-        'dnt',
-        'origin',
-        'user-agent',
-        'x-csrftoken',
-        'x-requested-with',
-        'Pragma',
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma',
+    'X-Real-IP',
+    'x-Forwarded-For',
+    'x-Forwarded-Host',
+    'Host',
+    'Upgrade',
+    'Connection',
+    'Sec-WebSocket-Extensions',
+    'Sec-WebSocket-Key',
+    'Sec-WebSocket-Version',
+    'Cache-Control',
 )
 
 ROOT_URLCONF = 'BackEnd.urls'
@@ -119,12 +133,12 @@ WSGI_APPLICATION = 'BackEnd.wsgi.application'
 REST_FRAMEWORK = {
     # 过滤文章功能
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    # 使用Django的标准`django.contrib.auth`权限管理类,
-    # 或者为尚未认证的用户，赋予只读权限.
-    'DEFAULT_PERMISSION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-    ],
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+		'rest_framework.permissions.AllowAny',
+    ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,    # 和上面的PageNumberPagination一起用来分页
 }
@@ -162,6 +176,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+ 
+ # JWT
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -185,3 +207,20 @@ STATIC_URL = '/static/'
 # Media
 MediaURL = '/media/'
 MediaROOT = os.path.join(BASE_DIR, 'media')
+
+# Celery
+# Celery
+CELERY_TIMEZONE = TIME_ZONE
+# CELERY_BROKER_URL = f"{REDIS_URL}/{REDIS_SETTING['DB']}"
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'default'
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+
+# CELERY_BEAT_SCHEDULE = {
+#     'battle_connect': {
+#         "task": "battle.tasks.battle_connect",
+#         "schedule": timedelta(seconds=15),
+#         "args": ()
+#     }
+# }

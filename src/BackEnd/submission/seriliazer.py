@@ -1,10 +1,11 @@
 from rest_framework import serializers
 
-from user_info.serializer import UserDescSerializer
+from user_info.serializers import AdminManagerUserInfoSerializer
 from problemlist.serializer import ProblemListSerializer
 from submission.models import Submission, Result, Usage
 
 
+# 提交的代码运行所用的时空消耗
 class UsageSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -12,6 +13,7 @@ class UsageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# 提交的得分和错误码
 class ResultSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -19,9 +21,10 @@ class ResultSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# 后端返回提交状态
 class StatusSerializer(serializers.ModelSerializer):
 
-    static_info = UsageSerializer()
+    static_info = UsageSerializer(read_only=True)
 
     class Meta:
         model = Submission
@@ -34,6 +37,7 @@ class StatusSerializer(serializers.ModelSerializer):
         ]
 
 
+# 用户提交代码
 class UserSubmitCodeSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -46,6 +50,7 @@ class UserSubmitCodeSerializer(serializers.ModelSerializer):
         ]
 
 
+# 用户获取后端结果
 class UserGetSubmissionResultSerializer(serializers.ModelSerializer):
 
     class Meta:

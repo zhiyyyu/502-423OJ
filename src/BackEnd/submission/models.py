@@ -49,7 +49,7 @@ class Submission(models.Model):
         on_delete=models.CASCADE
     )
     # 提交的用户
-    user_id = models.IntegerField(default=-1)
+    user_id = models.IntegerField(default=0)
     # 创建时间
     submit_time = models.DateTimeField(auto_now_add=True)
     # 提交代码

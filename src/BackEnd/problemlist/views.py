@@ -65,21 +65,21 @@ class ProblemListViewSet(viewsets.ModelViewSet):
     # 管理员可写，所有人可读
     permission_classes = [IsAdminUserOrElseReadOnly]
     # 过滤字段
-    filterset_fields = ['author__username', 'title']
+    filterset_fields = ['title']
 
-    # 往序列化数据中添加从request获得的用户信息
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+    # # 往序列化数据中添加从request获得的用户信息
+    # def perform_create(self, serializer):
+    #     serializer.save(author=self.request.user)
 
-    # 过滤文章，只看制定User的文章
-    def get_queryset(self):
-        queryset = self.queryset
-        username = self.request.query_params.get('username', None)
+    # # 过滤文章，只看制定User的文章
+    # def get_queryset(self):
+    #     queryset = self.queryset
+    #     username = self.request.query_params.get('username', None)
 
-        if username is not None:
-            queryset = queryset.filter(author__username=username)
+    #     if username is not None:
+    #         queryset = queryset.filter(author__username=username)
 
-        return queryset
+    #     return queryset
 
     def get_serializer_class(self):
         # 列表界面

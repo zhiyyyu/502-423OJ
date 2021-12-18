@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
 from markdown import Markdown
+
+from user_info.models import User
 
 # Create your models here.
 
@@ -50,13 +51,13 @@ class Problem(models.Model):
     # 时空限制
     time_limit = models.IntegerField(default=1000) # ms
     memory_limit = models.IntegerField(default=1) # MB
-    # 创建者，每道题对应一个作者
-    author = models.ForeignKey(
-        User,
-        null=True,
-        on_delete=models.CASCADE, 
-        related_name='problemlist'
-    )
+    # # 创建者，每道题对应一个作者
+    # author = models.ForeignKey(
+    #     User,
+    #     null=True,
+    #     on_delete=models.CASCADE, 
+    #     related_name='problemlist'
+    # )
     # 标签，题目用到的方法标签
     tags = models.ManyToManyField(
         Tag,

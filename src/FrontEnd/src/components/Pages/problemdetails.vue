@@ -2,7 +2,7 @@
   <el-container >
     <!--标题-->
     <el-header id="header" type="text" style="text-align: center" >
-      <strong style="font-size: xxx-large">{{ problemData.problem.title }}</strong>
+      <strong style="font-size: xxx-large">{{ problemData.title }}</strong>
     </el-header>
     <!--主界面-->
     <el-main id="main">
@@ -10,11 +10,11 @@
         <!--每行水平排列-->
         <el-row class="main-row">
           <span>Description：</span><br />
-          <markdown-it-vue class="md-body" :content="problemData.problem.body"></markdown-it-vue>
+          <markdown-it-vue class="md-body" :content="problemData.body"></markdown-it-vue>
         </el-row>
         <el-row class="main-row">
           <span>Author：</span><br />
-          <markdown-it-vue class="md-body" :content="problemData.problem.author.username"></markdown-it-vue>
+          <markdown-it-vue class="md-body" :content="problemData.author.username"></markdown-it-vue>
         </el-row>
         <!--暂时没有输入输出描述
         <el-row class="main-row">
@@ -28,15 +28,15 @@
         -->
         <el-row class="main-row">
           <span>Difficulty：</span><br />
-          {{ problemData.problem.difficulty }}
+          {{ problemData.difficulty }}
         </el-row>
         <el-row class="main-row">
           <span>Memory-Limit：</span><br />
-          {{ problemData.problem.memory_limit }}
+          {{ problemData.memory_limit }}
         </el-row>
         <el-row class="main-row">
           <span>Time-Limit：</span><br />
-          {{ problemData.problem.time_limit }}
+          {{ problemData.time_limit }}
         </el-row>
       </el-card>
     </el-main>
@@ -104,7 +104,28 @@ export default {
   },
   data() {
     return {
+      //问题的数据结构
       problemData: {
+        ac_number:1,
+        author:{
+          data_joined:"time",
+          id:1,
+          last_join:"time",
+          username:"张三"
+        },
+        body:"hello word",
+        created:"time",
+        difficulty: "Easy",
+        id: 1,
+        memory_limit: 1,
+        submission_number: 1,
+        tags: ["g"],
+        time_limit: 100,
+        title:"helloword",
+        url:"http://locahost:8000/api/problemlist/1/",
+      },
+      //提交的数据结构
+      submissionData:{
         code:"",
         create_time:"time",
         id:1,
@@ -142,7 +163,7 @@ export default {
         user_id:0
       },
 
-      language_mode: 'text/x-c++src',
+      // language_mode: 'text/x-c++src',
       cmdOptions: {
         tabSize: 4,                 //tab空格数
         mode: "text/x-c++src",      //c/c++语言代码高亮
@@ -152,17 +173,16 @@ export default {
         matchBrackets: true,        //括号匹配
       },
       sendInfo: {
-        pro_id:"",
+        id:"",
         code: "",
         language: "C++",
       },
       language_choose: "C++",
-
-      submission_problem_id:"",
-      loading:false,
-      counter:0,
-      timeoutObj:"",
-      editable: "",
+      // submission_problem_id:"",
+      // loading:false,
+      // counter:0,
+      // timeoutObj:"",
+      // editable: "",
     }
   },
   /**
@@ -179,8 +199,8 @@ export default {
   mounted:function(){
     console.log("mounted");
     this.problemData = JSON.parse(sessionStorage.getItem("problemID"));
-    this.sendInfo.pro_id = this.problemData.problem.id;
-    console.log("详情页面获取本地" + this.problemData.problem);
+    this.sendInfo.id = this.problemData.id;
+    console.log("详情页面获取本地" + this.problemData);
   },
   methods: {
     /**
@@ -274,16 +294,17 @@ export default {
      * 提交代码
      */
     submitCode() {
-      //控制台打印code
       if (this.sendInfo.code === "") {
         alert("不能提交空数据");
         return;
       }
-      console.log("你提交的代码如下：" + this.sendInfo.code);
-      this.loading = true;
+      //控制台打印提交的code
+      console.log("你提交的代码如下：\n" + this.sendInfo.code);
+      // this.loading = true;
       this.problemData.code = this.sendInfo.code;
       this.problemData.language = this.sendInfo.language;
-      this.problemData.problem.id = this.sendInfo.pro_id;
+      this.problemData.problem.id = this.sendInfo.id;
+      this.$message.info("正在检测中，请耐心等待");
       this.$axios({
         method: "post",
         url: "/api/submission/",
@@ -291,9 +312,9 @@ export default {
       }).then(response => {
         console.log(response.data.result);
         if (response.data.code === 0) {
-          // this.submission_problem_id=response.data.problem.id;
-          //console.log(this.submission_problem_id);
-          //显示题目解析情况
+          //输出接收到的数据
+          console.log(response.data);
+          //以信息方式提示题目的Status
           this.$message.info(this.showResult(response.data.result));
           //setTimeout(this.getResult, 2000)
         } else {
@@ -301,7 +322,11 @@ export default {
         }
       }).catch(error => {
         console.log(error);
-      });
+      }).finally(final=>{
+        console.log(final);
+        //提交代码后转到状态页
+        this.$router.push('/status');
+      })
     }
   }
 }

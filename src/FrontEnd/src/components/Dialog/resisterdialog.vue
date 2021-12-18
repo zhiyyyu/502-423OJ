@@ -64,6 +64,17 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      //后端传来的数据
+      // dataForm:{
+      //   code:"",
+      //   data:{
+      //     username: "",
+      //     password: "",
+      //     passwordagain:"",
+      //     email: "",
+      //   },
+      //   msg:""
+      // },
       resisterform: {
         username: "",
         password: "",
@@ -108,7 +119,22 @@ export default {
         this.$message({message: '邮箱格式不正确', type: 'error'})
         return ;
       }
-
+      this.$axios({
+        method:"post",
+        url:"/api/resister",
+        data:this.resisterform
+      }).then(response=>{
+        if(response.data.code===0){
+          console.log("恭喜用户注册成功");
+          alert(response.data.msg);
+        }else{
+          console.log("注册失败");
+        }
+      }).catch(error=>{
+        console.log("注册失败error="+error);
+        this.$message.error("注册失败");
+      })
+      //还没有实现
       // sessionStorage.removeItem('token');
       //
       // this.$axios({

@@ -1,7 +1,7 @@
 <template>
-  <el-card id="footer" >
+  <div id="footer">
     {{msg}}
-  </el-card>
+  </div>
 </template>
 
 <script>
@@ -11,6 +11,9 @@ export default {
     return{
       msg:"producer:yjl email:xxx@xxx.com"
     }
+  },
+  created() {
+    console.log("footer准备完毕");
   }
 }
 </script>
@@ -21,7 +24,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   font-size: small;
   color: black;
-  vertical-align: center;
   height: 50px;
 }
 </style>

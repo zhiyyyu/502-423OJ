@@ -11,7 +11,6 @@
         <ojfooter></ojfooter>
       </el-footer>
     </el-container>
-
   </div>
 </template>
 
@@ -28,13 +27,8 @@ export default {
     ojnavigation,
     ojfooter,
   },
-  data(){
-    return{
-
-    }
-  },
-  methods:{
-
+  created() {
+    console.log("主界面准备完毕");
   }
 }
 </script>

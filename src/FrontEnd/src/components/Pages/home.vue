@@ -1,7 +1,9 @@
 <template>
-  <el-card id="content">
-    {{msg}}
-  </el-card>
+  <div id="app">
+    <el-card id="content">
+      {{msg}}
+    </el-card>
+  </div>
 </template>
 <script>
 
@@ -26,7 +28,10 @@ export default {
   font-size: xxx-large;
   color: black;
   vertical-align: center;
-  height: 400px;
+  height: 550px;
+}
+#app{
+  height: 550px;
 }
 
 </style>

@@ -69,10 +69,11 @@ export default {
         //向后端传递数据
         this.$axios({
           method:"post",  //post方法
-          url:"api/login/",  //后端接口路径
+          url:"api/user/",  //后端接口路径
           data:this.userform  //传输的数据为用户表单
         }).then(response => {
           //控制台输出从后端收到的数据
+          console.log(this.userform);
           console.log(response.data);
           if(response.data.code === "10004"){
             console.log("用户名或密码错误");

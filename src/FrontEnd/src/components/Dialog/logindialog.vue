@@ -33,7 +33,7 @@
 </template>
 
 <script>
-
+import store from "@/store";
 export default {
   name:"login-dialog",
   data() {
@@ -76,6 +76,19 @@ export default {
       this.dialogVisible=false;
       console.log("你点击了登录界面的Cancel按钮");
     },
+
+    /**
+     * 刚刚测试用的
+     */
+    // login(){
+    //   store.state.userData.access="login";
+    //   store.state.local.userform=this.userform;
+    //   console.log("你点了登录进来");
+    //   console.log("token = "+store.state.userData.access);
+    //   this.$emit("colselogindialog",true);
+    //   this.$router.replace("/");
+    // }
+
     /**
      * 登录验证
      */
@@ -94,7 +107,18 @@ export default {
         }).then(response => {
           //控制台输出从后端收到的数据
           console.log(response.data);
-          if(response.data.code === "10004"){
+          if(response.data.code===0){
+            //将用户的数据存储在本地
+            store.state.userData=response.data.data;
+            //存储用户用户名和密码
+            store.state.userform=this.userform;
+            //子组件通知父组件nav关闭登录对话框以及登录注册按钮并显示用户按钮
+            console.log("通知父组件nav");
+            this.$emit("colselogindialog",true);
+            //进入后，直接回到主界面，并通知导航栏关闭登录注册按钮，显示个人信息下拉框
+            this.$router.push('/');
+            return  true;
+          }else if(response.data.code === "10004"){
             console.log("用户名或密码错误");
             return false;
           }

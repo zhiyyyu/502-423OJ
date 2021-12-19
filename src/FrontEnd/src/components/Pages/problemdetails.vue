@@ -113,15 +113,15 @@ export default {
           last_join:"time",
           username:"张三"
         },
-        body:"hello word",
+        body:"hello world",
         created:"time",
         difficulty: "Easy",
         id: 1,
-        memory_limit: 1,
+        memory_limit: 1000,
         submission_number: 1,
         tags: ["g"],
-        time_limit: 100,
-        title:"helloword",
+        time_limit: 1000,
+        title:"hello world",
         url:"http://locahost:8000/api/problemlist/1/",
       },
       //提交的数据结构
@@ -135,32 +135,14 @@ export default {
           score:100,
         },
         language:"",
-        problem:{
-          ac_number:1,
-          author:{
-            data_joined:"time",
-            id:1,
-            last_join:"time",
-            username:"张三"
-          },
-          body:"hello word",
-          created:"time",
-          difficulty: "Easy",
-          id: 1,
-          memory_limit: 1,
-          submission_number: 1,
-          tags: ["g"],
-          time_limit: 100,
-          title:"helloword",
-          url:"http://locahost:8000/api/problemlist/1/",
-        },
+        problem:0,
         result:1,
         static_info:{
           id:1,
           space:0,
           time:200
         },
-        user_id:0
+        user_id:0,
       },
 
       // language_mode: 'text/x-c++src',
@@ -199,6 +181,7 @@ export default {
   mounted:function(){
     console.log("mounted");
     this.problemData = JSON.parse(sessionStorage.getItem("problemID"));
+    console.log(this.problemData);
     this.sendInfo.id = this.problemData.id;
     console.log("详情页面获取本地" + this.problemData);
   },
@@ -299,27 +282,27 @@ export default {
         return;
       }
       //控制台打印提交的code
-      console.log("你提交的代码如下：\n" + this.sendInfo.code);
-      // this.loading = true;
-      this.problemData.code = this.sendInfo.code;
-      this.problemData.language = this.sendInfo.language;
-      this.problemData.problem.id = this.sendInfo.id;
+      console.log("你提交的代码如下：\n" + this.sendInfo, this.user_id);
+      this.submissionData.code = this.sendInfo.code;
+      this.submissionData.language = this.sendInfo.language;
+      this.submissionData.problem = this.sendInfo.id;
+      console.log(this.problemData);
       this.$message.info("正在检测中，请耐心等待");
       this.$axios({
         method: "post",
         url: "/api/submission/",
-        data: this.problemData
+        data: this.submissionData
       }).then(response => {
-        console.log(response.data.result);
-        if (response.data.code === 0) {
+        console.log(response.data.results);
+        // if (response.data.code === 0) {
           //输出接收到的数据
           console.log(response.data);
           //以信息方式提示题目的Status
-          this.$message.info(this.showResult(response.data.result));
+          this.$message.info(this.showResult(response.data.results));
           //setTimeout(this.getResult, 2000)
-        } else {
-          this.$message.error("服务器出错");
-        }
+        // } else {
+        //   this.$message.error("服务器出错");
+        // }
       }).catch(error => {
         console.log(error);
       }).finally(final=>{

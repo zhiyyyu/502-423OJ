@@ -9,7 +9,7 @@ export default {
   name: "oj-footer",
   data(){
     return{
-      msg:"producer:yjl email:xxx@xxx.com"
+      msg:"@502-423OJ"
     }
   },
   created() {

@@ -1,10 +1,8 @@
-import os
-import sys
 import time
 from datetime import timedelta
-sys.path.append('../../')
 from django.contrib import auth
 from django.utils.timezone import now
+from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import (AllowAny, IsAuthenticated, )
@@ -13,11 +11,26 @@ from user_info.serializers import (UserRegisterSerializer, UserLoginSerializer,
                             ImageUploadForm, UserChangePasswordSerializer,
                             UserResetPasswordSerializer, GetUserResetEmailTokenSerializer,
                             UserResetEmailSerializer, GetUserResetPasswordTokenSerializer,
-                            UpdateUserProfleSerializer, )
+                            UpdateUserProfleSerializer, RankSerializer,
+                            UserProfileSerializer)
 from user_info.models import (User, UserProfile, )
 from user_info.backend import (LoginBackend, )
 from conf.global_conf import (AVATAR_MAX_SIZE, AVATAR_FILE_PATH, AVATAR_SUPPORT_TYPE, AVATAR_URI_PREFIX, )
 from utils.api import (rand_str, get_user_and_token_by_jwt_request, async_send_email, )
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = [AllowAny]
+
+
+class RankViewSet(viewsets.ModelViewSet):
+
+    queryset = UserProfile.objects.all()
+    serializer_class = RankSerializer
+    permission_classes = [AllowAny]
 
 
 # 普通用户注册

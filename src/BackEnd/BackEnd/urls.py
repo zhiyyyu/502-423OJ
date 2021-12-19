@@ -21,27 +21,31 @@ from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView, TokenVerifyView
 
+from user_info.user_views import RankViewSet, UserProfileViewSet
 from problemlist.views import ProblemListViewSet, TagViewSet
 from comment.views import CommentViewSet
 from submission.views import (SubmissionViewSet, SubmissionResultViewSet,
                             SubmissionListDetailViewSet,
                             ResultViewSet, UsageViewSet,
-                            StatusViewSet)
+                            StatusViewSet, UserSubmissionListViewSet)
 
 router = DefaultRouter()
 # 题库功能
 router.register(r'problemlist', ProblemListViewSet)
 # router.register(r'tag', TagViewSet)
 # router.register(r'comment', CommentViewSet)
-# # 用户登陆注册
+# 用户登陆注册
+router.register(r'userprofile', UserProfileViewSet)
+router.register(r'user_submissionlist', UserSubmissionListViewSet)
 # router.register(r'user', UserViewSet)
 # 提交功能
-# router.register(r'result', ResultViewSet)
-# router.register(r'usage', UsageViewSet)
+router.register(r'result', ResultViewSet)
+router.register(r'usage', UsageViewSet)
 router.register(r'submission', SubmissionViewSet)
 router.register(r'submission_detail', SubmissionListDetailViewSet)
 router.register(r'submission_result', SubmissionResultViewSet)
-router.register(r'submission_status', StatusViewSet)
+router.register(r'status', StatusViewSet)
+router.register(r'rank', RankViewSet)
 
 urlpatterns = [
     # 后台url

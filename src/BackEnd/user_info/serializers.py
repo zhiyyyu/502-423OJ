@@ -4,6 +4,29 @@ from rest_framework import serializers
 from user_info.models import UserProfile
 
 
+# profile
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = [
+            'submission_number',
+            'accecpted_number',
+        ]
+
+
+# Rank
+class RankSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = [
+            'user',
+            'submission_number',
+            'accepted_number',
+        ]
+        ordering = ['submission_number']
+
 # 用户注册表单
 class UserRegisterSerializer(serializers.Serializer):
     username = serializers.CharField(required=True, min_length=6, max_length=150)

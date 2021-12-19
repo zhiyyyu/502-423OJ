@@ -57,6 +57,7 @@ class JudgeHandler(BaseHandler):
         self.submission.static_info = info
 
     def judge(self):
+
         language = self.submission.language
         config = list(filter(lambda item: language == item["name"], languages))[0]
         code = self.submission.code
@@ -68,6 +69,7 @@ class JudgeHandler(BaseHandler):
             "test_case_id": str(self.problem.id),
             "output": False,
         }
+        print("judgehandler post data: " , data)
 
         Submission.objects.filter(id=self.submission.id).update(result=JudgeStatus.JUDGING)
         

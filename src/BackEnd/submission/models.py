@@ -18,25 +18,22 @@ class JudgeStatus(object):
     PARTIALLY_ACCEPTED = 8
 
 class Language(object):
-    CPP = 0
-    C = 1
-    JAVA = 2
-    PYTHON = 3
+    CPP = "C++"
+    C = "C"
+    JAVA = "Java"
+    PYTHON = "Python"
 
 
 class Result(models.Model):
 
-    error_code = models.IntegerField()
-    score = models.IntegerField()
-
-    class Meta:
-        ordering = ['id']
+    error_code = models.IntegerField(default=0)
+    score = models.IntegerField(default=0)
 
 
 class Usage(models.Model):
 
-    time = models.IntegerField()
-    memory = models.IntegerField()
+    time = models.IntegerField(default=0)
+    memory = models.IntegerField(default=0)
 
     
 
@@ -49,7 +46,7 @@ class Submission(models.Model):
         on_delete=models.CASCADE
     )
     # 提交的用户
-    user_id = models.IntegerField(default=0)
+    user_id = models.IntegerField(default=0, null=True)
     # 创建时间
     submit_time = models.DateTimeField(auto_now_add=True)
     # 提交代码
@@ -60,7 +57,7 @@ class Submission(models.Model):
     info = models.ForeignKey(
         Result,
         blank=True,
-        null=True,
+        default=1,
         on_delete=models.CASCADE,
         related_name='submission',
     )
@@ -68,7 +65,7 @@ class Submission(models.Model):
     static_info = models.ForeignKey(
         Usage,
         blank=True,
-        null=True,
+        default=1,
         on_delete=models.CASCADE,
         related_name='submission',
     )

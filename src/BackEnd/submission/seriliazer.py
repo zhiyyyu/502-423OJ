@@ -53,10 +53,16 @@ class UserSubmitCodeSerializer(serializers.ModelSerializer):
 # 用户获取后端结果
 class UserGetSubmissionResultSerializer(serializers.ModelSerializer):
 
+    info = ResultSerializer()
+    info_id = serializers.IntegerField()
+    static_info = UsageSerializer()
+    static_info_id = serializers.IntegerField()
+
     class Meta:
         model = Submission
         fields = [
-            'id',
+            'user_id',
+            'result',
             'info',
             'static_info',
         ]
@@ -71,3 +77,19 @@ class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
         fields = '__all__'
+
+
+# user submiission界面
+class UserSubmissionListSerializer(serializers.ModelSerializer):
+
+    static_info = UsageSerializer()
+
+    class Meta:
+        model = Submission
+        fields = [
+            'submit_time',
+            'result',
+            'problem',
+            'static_info',
+            'language',
+        ]

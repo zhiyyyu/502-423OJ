@@ -235,6 +235,7 @@ export default {
     this.problemDetail = JSON.parse(sessionStorage.getItem("problemID"));
     console.log(this.problemDetail);
     this.sendInfo.id = this.problemDetail.id;
+    this.getData();
   },
   methods: {
     /**
@@ -274,6 +275,21 @@ export default {
       //返回上一页
       this.$router.go(-1);
     },
+    // getData(){
+    //   this.$axios({
+    //     method: "get",
+    //     //这是请求题目详情数据的后端接口
+    //     url: "/api/problemlist/"+this.submission_id+"/",
+    //   }).then(response => {
+    //     //获取数据
+    //     console.log("成功获取到题目:");
+    //     console.log(response.data);
+    //     this.problemDetail=response.data;
+    //   }).catch(error => {
+    //     console.log("服务器发生了错误：【"+error+"】");
+    //     this.$message.error("An error occurred on the server！Please try again...");
+    //   });
+    // },
     /**
      * 从后端获取问题的解决情况
      */

@@ -24,10 +24,10 @@
         <span>Rank</span>
       </el-menu-item>
 
-      <el-menu-item index="/about">
+      <!-- <el-menu-item index="/about">
         <i class="el-icon-s-order"></i>
         <span>About</span>
-      </el-menu-item>
+      </el-menu-item> -->
 
       <!--按钮区-->
       <el-button id="resister-button"
@@ -160,6 +160,7 @@ export default {
       this.$refs.logindialog.close();
       this.isShowUserInfo=true;
       this.isShowButton=false;
+      this.user = store.state.userform;
     }
   }
 }

@@ -121,7 +121,7 @@ export default {
       }
       this.$axios({
         method:"post",
-        url:"/api/resister",
+        url:"/api/register/",
         data:this.resisterform
       }).then(response=>{
         if(response.data.code===0){

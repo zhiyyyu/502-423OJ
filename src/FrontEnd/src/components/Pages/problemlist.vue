@@ -58,7 +58,7 @@ export default {
       //页大小（即题目容量）
       pageSize: 10,
       //题目数量
-      totalProblem: 30,
+      totalProblem: 1,
       //搜索输入
       searchInput: "",
       //问题Table
@@ -126,6 +126,7 @@ export default {
       }).then(response => {
 
         this.data = response.data;
+        this.totalProblem = this.data.count;
         //问题table列表接受results列表
         this.problemTable=this.data.results;
       }).catch(error => {

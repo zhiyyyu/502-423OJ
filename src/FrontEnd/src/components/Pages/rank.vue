@@ -59,6 +59,7 @@ export default {
           page: requestPage
         }
       }).then(response => {
+          this.totalRank = response.data.count;
           this.rankTable = response.data.results;
       }).catch(error => {
         this.$message.error("服务器错误，获取数据失败");

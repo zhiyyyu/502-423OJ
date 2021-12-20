@@ -72,6 +72,7 @@ export default {
       }).then(response => {
         // if(response.data.code===0){
           //这里的数据结构还没有协商好
+          this.totalStatus = response.data.count;
           this.statusTable = response.data.results;
           console.log(this.statusTable);
         // }else{

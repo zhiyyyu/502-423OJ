@@ -80,6 +80,7 @@ export default {
       }).then(response => {
         // if(response.data.code===0){
         //   //这里的数据结构还没有协商好
+          this.totalSubmission = response.data.count;
           this.submissionTable = response.data.results;
         // }else{
         //   console.log("接收数据错误");

@@ -59,12 +59,7 @@ export default {
           page: requestPage
         }
       }).then(response => {
-        // if(response.data.code===0){
-        //   //这里的数据结构还没有协商好
           this.rankTable = response.data.results;
-        // }else{
-        //   console.log("接收数据错误");
-        // }
       }).catch(error => {
         this.$message.error("服务器错误，获取数据失败");
         console.log("服务器错误！" + "(" + JSON.stringify(error) + ")");

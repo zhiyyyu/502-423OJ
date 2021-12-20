@@ -50,19 +50,14 @@ export default {
         //方法
         method: 'get',
         //后端接口
-        url: '/api/usersubmission/',
+        url: '/api/about/',
         //数据
         params: {
           size: pageSize,
           page: requestPage
         }
       }).then(response => {
-        if(response.data.code===0){
-          //这里的数据结构还没有协商好
-          this.aboutTable = response.data;
-        }else{
-          console.log("接收数据错误");
-        }
+        this.aboutTable = response.data;
       }).catch(error => {
         this.$message.error("服务器错误，获取数据失败");
         console.log("服务器错误！" + "(" + JSON.stringify(error) + ")");

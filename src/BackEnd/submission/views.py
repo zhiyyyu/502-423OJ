@@ -66,6 +66,7 @@ class SubmissionViewSet(viewsets.ModelViewSet):
 
             # if user:
             data = self.request.data
+            print("user_id: ", self.request.user.id)
             submission = Submission.objects.create(
                                 problem=Problem.objects.get(id=data['problem']),
                                 user_id=self.request.user.id,

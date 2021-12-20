@@ -18,6 +18,8 @@ from submission.models import Submission, JudgeStatus, Result, Usage
 from judge.languages import languages
 
 root = "./judge"
+# fin = open(os.path.join(root, 'a.in'), 'r+')
+# fout = open(os.path.join(root, 'a.out'), 'w')
 
 class Judger(object):
 
@@ -25,8 +27,15 @@ class Judger(object):
 
         self.fin = open(os.path.join(root, 'a.in'), 'r+')
         self.fout = open(os.path.join(root, 'a.out'), 'w+')
+        # print("f: ", self.fin, self.fout)
         self.submission = Submission.objects.get(id=submission_id)
         self.problem = Problem.objects.get(id=problem_id)
+
+    def __del__(self):
+
+        pass
+        # self.fin.close()
+        # self.fout.close()
 
     # def _request(self, data):
     #     try:
@@ -35,11 +44,11 @@ class Judger(object):
     #     except Exception as e:
     #         return {'code': -999, 'msg': 'exception'}
 
-    def _static_info_handler(self, data):
-        info = {}
-        info['time_cost'] = max([x['cpu_time'] for x in data])
-        info['memory_cost'] = max([x['memory'] for x in data])
-        self.submission.static_info = info
+    # def _static_info_handler(self, data):
+    #     info = {}
+    #     info['time_cost'] = max([x['cpu_time'] for x in data])
+    #     info['memory_cost'] = max([x['memory'] for x in data])
+    #     self.submission.static_info = info
 
     def _compile_with(self, language):
         
@@ -50,8 +59,9 @@ class Judger(object):
             return False
         return True
 
-    def _set_submission_status(self, result, score, return_code, usage_memory, usage_time):
+    def _set_submission_status(self, user_id, result, score, return_code, usage_memory, usage_time):
 
+        self.submission.user_id = 0
         self.submission.result = result
         self.submission.info = Result.objects.create(
             score=score,
@@ -68,18 +78,14 @@ class Judger(object):
         currect_result = os.path.join(root, "ans.out")
         user_result = os.path.join(root, "a.out")
         try:
-            curr = open(currect_result).read().replace('\r','').rstrip()#删除\r,删除行末的空格和换行  
+            curr = open(currect_result, 'r').read().replace('\r','').rstrip()#删除\r,删除行末的空格和换行  
             print(curr)
-            user = open(user_result).read().replace('\r','').rstrip()  #python2中使用file函数
+            user = open(user_result, 'r').read().replace('\r','').rstrip()  #python2中使用file函数
             print(user)
         except:
             return False
         if curr == user:       #完全相同:AC
             return "Accepted"
-        if curr.split() == user.split(): #除去空格,tab,换行相同:PE
-            return "Presentation Error"
-        if curr in user:  #输出多了
-            return "Output limit"
         return "Wrong Answer"  #其他WA
 
     def judge(self):
@@ -98,7 +104,7 @@ class Judger(object):
         }
 
         # 修改状态为测评中
-        Submission.objects.filter(id=self.submission.id).update(result=JudgeStatus.JUDGING)
+        Submission.objects.filter(id=self.submission.id).update(result=JudgeStatus.JUDGING, user_id=0)
         
         # 提交测评
         # print("judger write.")
@@ -109,18 +115,19 @@ class Judger(object):
         with open(os.path.join(root, LANGUAGE_SRC_FILE[self.submission.language]), 'w+') as f:
             f.write(code)
 
-        # print('start compile.')
-        # resp['err'] = self._compile_with(self.submission.language)
-        # print(resp['err'])
         max_rss = 0
-        p = subprocess.Popen(BUILD_CMD[language],shell=True,cwd=root,stdin=self.fin,stdout=self.fout,stderr=subprocess.PIPE) #cwd设置工作目录
-        start_time = time.time()
-        print(p.returncode)
 
-        # if p.returncode != 0:
-        #     self._set_submission_status(JudgeStatus.COMPILE_ERROR, 0, p.returncode, 0, 0)
+        print(BUILD_CMD[language])
+        p = subprocess.Popen(BUILD_CMD[language],shell=True,cwd=root,stdin=self.fin,stdout=self.fout,stderr=subprocess.PIPE) #cwd设置工作目录
+        # print(p.communicate())
+        
+        # if p.communicate()[1] != None:
+        #     print('compile error.')
+        #     self._set_submission_status(self.submission.user_id, JudgeStatus.COMPILE_ERROR, 0, p.returncode, 0, 0)
         #     self._update_user_statues_handler()
         #     return
+            
+        start_time = time.time()
 
         pid = p.pid
         glan = psutil.Process(pid) #监听控制进程
@@ -128,7 +135,8 @@ class Judger(object):
         while True:
             time_now = time.time() - start_time
             if psutil.pid_exists(pid) is False:   #运行错误
-                self._set_submission_status(JudgeStatus.RUNTIME_ERROR, 0, p.returncode, max_rss/1024.0, time_now*1000)
+                print('runtime error.')
+                self._set_submission_status(self.submission.user_id, JudgeStatus.RUNTIME_ERROR, 0, p.returncode, max_rss/1024.0, time_now*1000)
                 self._update_user_statues_handler()
                 return
 
@@ -140,42 +148,24 @@ class Judger(object):
                 max_rss = rss
                 
             if time_now > self.problem.time_limit/1000:  #时间超限
-                self._set_submission_status(JudgeStatus.CPU_TIME_LIMIT_EXCEEDED, 0, p.returncode, max_rss/1024.0, time_now*1000)
+                self._set_submission_status(self.submission.user_id, JudgeStatus.CPU_TIME_LIMIT_EXCEEDED, 0, p.returncode, max_rss/1024.0, time_now*1000)
                 self._update_user_statues_handler()
                 glan.terminate()
                 return 
             if max_rss > self.problem.memory_limit*1024*1024: #内存超限
-                self._set_submission_status(JudgeStatus.MEMORY_LIMIT_EXCEEDED, 0, p.returncode, max_rss/1024.0, time_now*1000)
+                self._set_submission_status(self.submission.user_id, JudgeStatus.MEMORY_LIMIT_EXCEEDED, 0, p.returncode, max_rss/1024.0, time_now*1000)
                 self._update_user_statues_handler()
                 glan.terminate()
                 return
-                
-        self._set_submission_status(JudgeStatus.ACCEPTED, 100, p.returncode, max_rss/1024.0, time_now*1000)
+        self.fin.close()
+        self.fout.close()
+
+        if self._judge_result() == "Accepted":
+            self._set_submission_status(self.submission.user_id, JudgeStatus.ACCEPTED, 100, p.returncode, max_rss/1024.0, time_now*1000)
+        else:
+            self._set_submission_status(self.submission.user_id, JudgeStatus.WRONG_ANSWER, 0, p.returncode, max_rss/1024.0, time_now*1000)
         self._update_user_statues_handler()
         return 
-
-        # if resp['err']:
-        #     print('CE!')
-        #     self.submission.result = JudgeStatus.COMPILE_ERROR
-        #     info = {'err_info': resp['data']}
-        #     self.submission.static_info = info
-        # else:
-        #     resp['result'] = self._judge_result()
-        #     print(resp['result'])
-        #     if resp['result'] == 'Accepted':
-        #         self.submission.result = JudgeStatus.ACCEPTED
-
-            # resp["data"].sort(key=lambda x: int(x["test_case"]))
-            # self.submission.info = resp
-            # self._static_info_handler(resp['data'])
-            # error_test_case = list(filter(lambda case: case["result"] != 0, resp["data"]))
-            # if not error_test_case:
-            #     self.submission.result = JudgeStatus.ACCEPTED
-            # else:
-            #     self.submission.result = error_test_case[0]["result"]
-
-        # self.submission.save()
-        # self._update_user_statues_handler()
 
     def _update_user_statues_handler(self):
         with transaction.atomic():

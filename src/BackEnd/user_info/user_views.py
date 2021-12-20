@@ -99,13 +99,15 @@ class UserLoginView(APIView):
         user = auth.authenticate(username=username, password=password)
 
         if user:
-            print('user login!')
+            # print('user login!')
             jwt_refresh = RefreshToken.for_user(user)
             user_profile = UserProfile.objects.get(user=user)
             resp_data['data']['access'] = str(jwt_refresh.access_token)
             resp_data['data']['refresh'] = str(jwt_refresh)
             resp_data['data']['user_type'] = str(user.user_type)
             resp_data['data']['id'] = int(user.pk)
+            resp_data['code'] = 0
+            resp_data['msg'] = 'success'
             # resp_data['data']['avatar'] = str(user_profile.avatar)
             return Response(data=resp_data)
         else:

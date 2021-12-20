@@ -38,8 +38,8 @@ LANGUAGE_OUT_FILE = {
     'Python3': 'main',
 }
 BUILD_CMD = {
-    "C": "gcc main.c -o main",
-    "C++": "g++ main.cpp -o main",
+    "C": "gcc main.c -o main && ./main",
+    "C++": "g++ main.cpp -o main && ./main",
     "Java": "javac Main.java",
     "Python3": 'python3 main.py',
     # "ruby": "ruby -c main.rb",

@@ -29,6 +29,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',]
 
+# time zone
+TIME_ZONE = 'Asia/Shanghai'
+
 
 AUTH_USER_MODEL = "user_info.User" 
 # AUTHENTICATION_BACKEND = [

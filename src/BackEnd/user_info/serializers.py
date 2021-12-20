@@ -1,18 +1,24 @@
 from django import forms
 from rest_framework import serializers
 
-from user_info.models import UserProfile
+from user_info.models import UserProfile, User
 
 
-# profile
-class UserProfileSerializer(serializers.ModelSerializer):
+# # profile
+# class UserProfileSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = UserProfile
+#         fields = [
+#             'submission_number',
+#             'accecpted_number',
+#         ]
+
+class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = UserProfile
-        fields = [
-            'submission_number',
-            'accecpted_number',
-        ]
+        model = User
+        fields = '__all__'
 
 
 # Rank
@@ -114,6 +120,8 @@ class AdminDeleteUserSerializer(serializers.Serializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer()
 
     class Meta:
         model = UserProfile

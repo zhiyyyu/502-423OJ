@@ -66,14 +66,16 @@ class SubmissionViewSet(viewsets.ModelViewSet):
 
             # if user:
             data = self.request.data
-            print("user_id: ", self.request.user.id)
+            # print("user_id: ", self.request.user.id)
             submission = Submission.objects.create(
                                 problem=Problem.objects.get(id=data['problem']),
                                 user_id=self.request.user.id,
                                 code=self.request.data['code'],
                                 language=self.request.data['language'],
                                 )
-            # submission.save()
+            # instance = self.get_object()
+            # serializer = self.get_serializer(instance, data=submission)
+            # self.perform_update(serializer)
             # print('before judge delay.')
             Judger(submission.id, data['problem']).judge()
         

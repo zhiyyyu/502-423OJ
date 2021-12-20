@@ -72,5 +72,7 @@ class Submission(models.Model):
     # 使用的语言
     language = models.TextField(default=Language.CPP)
 
+    class Meta:
 
+        ordering = ['-submit_time']
 

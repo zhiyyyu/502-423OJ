@@ -1,6 +1,8 @@
 #include<iostream>
 using namespace std;
 int main(){
-  cout << 1 << endl;
+ int a, b;
+  cin >> a >> b;
+  cout <<a+b << endl;
   return 0;
 }
